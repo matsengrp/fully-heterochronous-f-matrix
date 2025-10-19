@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=64", "wheel", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heterochronous-f-matrix"
+description = "F-matrix representation of ranked tree shapes with sampling implementations"
+readme = "README.md"
+authors = [
+    {name = "Matsen Group", email = "ematsen@gmail.com"}
+]
+requires-python = ">=3.11, <3.13"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.12",
+]
+dynamic = ["version"]
+dependencies = [
+    "ete3",
+    "git-lfs",
+    "numpy",
+    "pandas",
+    "scipy",
+    "torch",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "docformatter",
+    "ipywidgets",
+    "ipython",
+    "ipykernel",
+    "matplotlib",
+    "notebook",
+    "pytest",
+    "PyQt5",
+    "seaborn",
+    "typing_extensions",
+]
+
+[project.urls]
+repository = "https://github.com/matsengrp/fully-heterochronous-f-matrix.git"
+
+
+[tool.setuptools]
+packages = ["python"]
+
+[tool.setuptools.package-data]
+python = ["py.typed"]
+
+[tool.pytest.ini_options]
+markers = [
+    "r_comparison: tests that require R and ape package"
+]

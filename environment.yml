@@ -1,0 +1,20 @@
+name: farmrats
+
+channels:
+  - https://prefix.dev/conda-forge
+  - https://prefix.dev/bioconda
+  - nodefaults
+
+dependencies:
+  - python=3.12 
+  - ete3
+  - numpy
+  - matplotlib
+  - notebook
+  - ipywidgets
+  - git-lfs
+  - pandas
+  - seaborn
+  - pip  
+  - pip:
+    - torch --index-url https://download.pytorch.org/whl/cu118
