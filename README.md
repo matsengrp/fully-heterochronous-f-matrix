@@ -9,27 +9,27 @@ This repository contains code for working with F-matrix representations of ranke
 ## Components
 
 ### Python (`python/`)
-- **f_matrix.py**: Core functionality for F-matrix representation
+- `f_matrix.py`: Core functionality for F-matrix representation
   - Generate all F-matrices for given tree sizes
   - Convert between tree and matrix representations (F-matrix, D-matrix, E-matrix)
   - Sample from distributions on ranked tree shapes
   - Validate and visualize ranked tree shapes
 
 ### R (`Rscript/`)
-- **enumerate.R / enumerate_clean.R**: Enumerate all isochronous trees
-- **generate_fmatrices_optimized.R**: Optimized binary F-matrix generation
-- **sampling.R**: Sampling utilities
-- **simulation R code/**: Tree simulations
-  - bernoulli_splitting.R
-  - diag_top_down.R
-  - sampling_coales.R
+- `enumerate.R` / `enumerate_clean.R`: Enumerate all isochronous trees
+- `generate_fmatrices_optimized.R`: Optimized binary F-matrix generation
+- `sampling.R`: Sampling utilities
+- `simulation R code/`: Tree simulations
+  - `bernoulli_splitting.R`
+  - `diag_top_down.R`
+  - `sampling_coales.R`
 
 ## Installation
 
 ```bash
 # Create conda environment
 mamba env create -f environment.yml
-mamba activate farmrats
+mamba activate farmrats  # TODO: update environment name in environment.yml
 
 # Install package
 pip install -e '.[dev]'
@@ -61,7 +61,3 @@ pytest tests/test_f_matrix.py
 # Run Python vs R comparison tests (requires R with ape package)
 pytest tests/test_sampling.py -m r_comparison
 ```
-
-## Repository
-
-This code was extracted from the [farmrats](https://github.com/matsengrp/farmrats) repository, which contains deep learning models for ranked tree shapes.
