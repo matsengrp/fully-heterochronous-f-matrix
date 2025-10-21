@@ -137,13 +137,13 @@ coales_sample <- function(sample_size, tree_size,seed=781){
 
 
 
-coales_sample_100_5 = coales_sample(100,5)
-coales_sample_100_20 = coales_sample(100,20)
-coales_sample_100_50 = coales_sample(100,50)
-
-coales_sample_500_5 = coales_sample(500,5)
-coales_sample_500_20 = coales_sample(500,20)
-coales_sample_500_50 = coales_sample(500,50)
+# coales_sample_100_5 = coales_sample(100,5)
+# coales_sample_100_20 = coales_sample(100,20)
+# coales_sample_100_50 = coales_sample(100,50)
+# 
+# coales_sample_500_5 = coales_sample(500,5)
+# coales_sample_500_20 = coales_sample(500,20)
+# coales_sample_500_50 = coales_sample(500,50)
 
 coales_sample_1000_5 = coales_sample(1000,5)
 coales_sample_1000_20 = coales_sample(1000,20)

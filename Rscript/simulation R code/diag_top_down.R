@@ -2,6 +2,9 @@ library(gdata)
 library(ggplot2)
 library(cowplot)
 
+source("bernoulli_splitting_final.R")
+source("sampling_coales_final.R")
+
 catalan<-function(n){
   return(choose(2*n,n)/(n+1))
 }
@@ -140,129 +143,98 @@ diag_sample <- function(sample_size, tree_size,seed=781){
 
 
 
-diag_sample_100_5 = diag_sample(100,5)
-diag_sample_100_20 = diag_sample(100,20)
-diag_sample_100_50 = diag_sample(100,50)
-
-diag_sample_500_5 = diag_sample(500,5)
-diag_sample_500_20 = diag_sample(500,20)
-diag_sample_500_50 = diag_sample(500,50)
+# diag_sample_100_5 = diag_sample(100,5)
+# diag_sample_100_20 = diag_sample(100,20)
+# diag_sample_100_50 = diag_sample(100,50)
 # 
+# diag_sample_500_5 = diag_sample(500,5)
+# diag_sample_500_20 = diag_sample(500,20)
+# diag_sample_500_50 = diag_sample(500,50)
+
 diag_sample_1000_5 = diag_sample(1000,5)
 diag_sample_1000_20 = diag_sample(1000,20)
 diag_sample_1000_50 = diag_sample(1000,50)
 
 
 
-#### 1000 sample 5 leaves####
-# coalescent
 
 
-#### 1000 sample 20 leaves####
+
+#### generating graphs####
+# coales
 p21 <- ggplot(data.frame(int_length = coales_sample_1000_20$int_length),
-             aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length") + 
-  xlim(34,191)+
-  ylim(0,45)
+              aes(x = int_length)) +
+  geom_bar(color = "lightpink", fill = "lightpink") +
+  theme_minimal() +
+  labs(y="count")+
+  theme(axis.title.x = element_blank(), 
+        axis.ticks = element_blank(),
+        axis.title.y = element_text(size=10),)+
+  xlim(34,330)+
+  ylim(0,60)
 
 p22 <- ggplot(data.frame(total_length = coales_sample_1000_20$total_length),
-             aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length",title="Coalescence",y="")+
-  xlim(74,415)+
-  ylim(0,50)
+              aes(x = total_length)) +
+  geom_bar(color = "lightpink", fill = "lightpink") +
+  theme_minimal() +
+  labs( title= "Coalescence")+
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 10,face="bold"))+
+  xlim(70,742)+
+  ylim(0,65)
+
 
 p23 <- ggplot(data.frame(cherry = coales_sample_1000_20$cherry),
-             aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries",y="")+
-  xlim(1,10)+
+              aes(x = cherry)) +
+  geom_bar(color = "lightpink", fill = "lightpink") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank() )+
+  xlim(0,17)+
   ylim(0,500)
 
 # diagonal
 p24 <- ggplot(data.frame(int_length = diag_sample_1000_20$int_length),
-             aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")+ 
-  xlim(34,191)+
-  ylim(0,45)
+              aes(x = int_length)) +
+  geom_bar(color = "gray80", fill = "gray80") +
+  theme_minimal() +
+  labs(y="count")+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_text(size=10),
+        axis.ticks = element_blank() )+
+  xlim(34,330)+
+  ylim(0,60)
 
 p25 <- ggplot(data.frame(total_length = diag_sample_1000_20$total_length),
-             aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="Diagonal top-down",y="")+
-  xlim(74,415)+
-  ylim(0,50)
+              aes(x = total_length)) +
+  geom_bar(color = "gray80", fill = "gray80") +
+  theme_minimal() +
+  labs(title="Diagonal top-down")+
+  xlim(70,742)+
+  ylim(0,65)+
+  theme(plot.title = element_text(size = 10,face="bold"),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank())
+
+
 
 p26 <- ggplot(data.frame(cherry = diag_sample_1000_20$cherry),
-             aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries",y="")+
-  xlim(1,10)+
-  ylim(0,500)
-
-# bernoulli
-p27 <- ggplot(data.frame(int_length = bernoulli_1000_20$int_length),
-              aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")+ 
-  xlim(34,191)+
-  ylim(0,45)
-
-p28 <- ggplot(data.frame(total_length = bernoulli_1000_20$total_length),
-              aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="Bernoulli splitting (beta =1)",y="")+
-  xlim(74,415)+
-  ylim(0,50)
-
-p29 <- ggplot(data.frame(cherry = bernoulli_1000_20$cherry),
               aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries",y="")+
-  xlim(0,11)+
+  geom_bar(color = "gray80", fill = "gray80") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank())+
+  xlim(0,17)+
   ylim(0,500)
 
-plot_grid(p21, p22, p23, p24, p25, p26, p27, p28, p29,
-          nrow = 3, ncol = 3, align = "hv")
-
-
-#ok stop here
 
 
 
+(p21|p22|p23)/ (p24|p25|p26) /(p1|p2|p3)/(p4|p5|p6)/(p7|p8|p9) & theme(plot.margin = margin(2,2,2,2))
 
-#### 1000 sample 50 leaves ####
-p31 <- ggplot(data.frame(int_length = coales_sample_1000_50$int_length),
-             aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")
 
-p32 <- ggplot(data.frame(total_length = coales_sample_1000_50$total_length),
-             aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length",title="The coalescence model")
 
-p33 <- ggplot(data.frame(cherry = coales_sample_1000_50$cherry),
-             aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries")
 
-# diagonal
-p34 <- ggplot(data.frame(int_length = diag_sample_1000_50$int_length),
-             aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")
 
-p35 <- ggplot(data.frame(total_length = diag_sample_1000_50$total_length),
-             aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="The diagonal model")
-
-p36 <- ggplot(data.frame(cherry = diag_sample_1000_50$cherry),
-             aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries")
-
-plot_grid(p31, p32, p33, p34, p35, p36, nrow = 2, ncol = 3, align = "hv")

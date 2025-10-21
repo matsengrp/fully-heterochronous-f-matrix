@@ -1,3 +1,5 @@
+library(patchwork)
+
 valid_heterochronous_diagonals <- function(i, n, previous) {
   if (i == 1 || previous == 1) {
     # Return the tuple with the value (2, 2)
@@ -42,7 +44,7 @@ valid_non_diagonal_values <- function(i, j, left, left_up, up, prev_diag = NULL,
   }
 }
 
-sample_heterochronous_f_matrix_from_probs <- function(n_tips, prob_matrix,beta=1) {
+sample_heterochronous_f_matrix_from_probs <- function(n_tips, prob_matrix,alpha=1,beta=1) {
   # Matrix side length.
   m <- 2 * n_tips - 2
   
@@ -75,7 +77,7 @@ sample_heterochronous_f_matrix_from_probs <- function(n_tips, prob_matrix,beta=1
       lower <- non_diag[1]
       upper <- non_diag[2]
       prob <- prob_matrix[i, j]
-      mat[i, j] <- ifelse(rbeta(1,beta,beta) <= prob, lower, upper)
+      mat[i, j] <- ifelse(rbeta(1,alpha,beta) <= prob, lower, upper)
     }
   }
   
@@ -104,16 +106,16 @@ sample_heterochronous_f_matrix_from_probs <- function(n_tips, prob_matrix,beta=1
 
 
 
-bernoulli_sample <- function(sample_size, tree_size,beta=1, seed=781){
+bernoulli_sample <- function(sample_size, tree_size,alpha=1,beta=1, seed=781){
   
   set.seed(781)
   
   m <- 2 * tree_size - 2
   prob_matrix <- matrix(0, nrow = m, ncol = m)
   for (i in 1:m) {
-      for (j in 1:i) {
-        prob_matrix[i, j] <- rbeta(1,beta,beta)
-      }
+    for (j in 1:i) {
+      prob_matrix[i, j] <- rbeta(1,alpha,beta)
+    }
   }
   
   internal_length_vec = rep(0,sample_size)
@@ -173,125 +175,166 @@ bernoulli_sample <- function(sample_size, tree_size,beta=1, seed=781){
   
 }
 
-bernoulli_100_5=bernoulli_sample(sample_size = 100,tree_size = 5)
-bernoulli_100_20=bernoulli_sample(sample_size = 100,tree_size = 20)
-bernoulli_100_50=bernoulli_sample(sample_size = 100,tree_size = 50)
+# alpha = 10, beta =1
+# bernoulli_100_5.10_1=bernoulli_sample(sample_size = 100,tree_size = 5,alpha=10)
+# bernoulli_100_20.10_1=bernoulli_sample(sample_size = 100,tree_size = 20,alpha=10)
+# bernoulli_100_50.10_1=bernoulli_sample(sample_size = 100,tree_size = 50,alpha=10)
+# 
+# bernoulli_500_5.10_1=bernoulli_sample(sample_size = 500,tree_size = 5,alpha=10)
+# bernoulli_500_20.10_1=bernoulli_sample(sample_size = 500,tree_size = 20,alpha=10)
+# bernoulli_500_50.10_1=bernoulli_sample(sample_size = 500,tree_size = 50,alpha=10)
 
-bernoulli_500_5=bernoulli_sample(sample_size = 500,tree_size = 5)
-bernoulli_500_20=bernoulli_sample(sample_size = 500,tree_size = 20)
-bernoulli_500_50=bernoulli_sample(sample_size = 500,tree_size = 50)
+bernoulli_1000_5.10_1=bernoulli_sample(sample_size = 1000,tree_size = 5,alpha=10)
+bernoulli_1000_20.10_1=bernoulli_sample(sample_size = 1000,tree_size = 20,alpha=10)
+bernoulli_1000_50.10_1=bernoulli_sample(sample_size = 1000,tree_size = 50,alpha=10)
 
-bernoulli_1000_5=bernoulli_sample(sample_size = 1000,tree_size = 5)
-bernoulli_1000_20=bernoulli_sample(sample_size = 1000,tree_size = 20)
-bernoulli_1000_50=bernoulli_sample(sample_size = 1000,tree_size = 50)
+# alpha = 10, beta = 10
+# bernoulli_100_5.10_10=bernoulli_sample(sample_size = 100,tree_size = 5,beta=10,alpha=10)
+# bernoulli_100_20.10_10=bernoulli_sample(sample_size = 100,tree_size = 20,beta=10,alpha=10)
+# bernoulli_100_50.10_10=bernoulli_sample(sample_size = 100,tree_size = 50,beta=10,alpha=10)
+# 
+# bernoulli_500_5.10_10=bernoulli_sample(sample_size = 500,tree_size = 5,beta=10,alpha=10)
+# bernoulli_500_20.10_10=bernoulli_sample(sample_size = 500,tree_size = 20,beta=10,alpha=10)
+# bernoulli_500_50.10_10=bernoulli_sample(sample_size = 500,tree_size = 50,beta=10,alpha=10)
 
-# beta = 10
-bernoulli_100_5.10=bernoulli_sample(sample_size = 100,tree_size = 5,beta=10)
-bernoulli_100_20.10=bernoulli_sample(sample_size = 100,tree_size = 20,beta=10)
-bernoulli_100_50.10=bernoulli_sample(sample_size = 100,tree_size = 50,beta=10)
+bernoulli_1000_5.10_10=bernoulli_sample(sample_size = 1000,tree_size = 5,beta=10,alpha=10)
+bernoulli_1000_20.10_10=bernoulli_sample(sample_size = 1000,tree_size = 20,beta=10,alpha=10)
+bernoulli_1000_50.10_10=bernoulli_sample(sample_size = 1000,tree_size = 50,beta=10,alpha=10)
 
-bernoulli_500_5.10=bernoulli_sample(sample_size = 500,tree_size = 5,beta=10)
-bernoulli_500_20.10=bernoulli_sample(sample_size = 500,tree_size = 20,beta=10)
-bernoulli_500_50.10=bernoulli_sample(sample_size = 500,tree_size = 50,beta=10)
+# alpha=1, beta=10
+# bernoulli_100_5.1_10=bernoulli_sample(sample_size = 100,tree_size = 5,beta=10)
+# bernoulli_100_20.1_10=bernoulli_sample(sample_size = 100,tree_size = 20,beta=10)
+# bernoulli_100_50.1_10=bernoulli_sample(sample_size = 100,tree_size = 50,beta=10)
+# 
+# bernoulli_500_5.1_10=bernoulli_sample(sample_size = 500,tree_size = 5,beta=10)
+# bernoulli_500_20.1_10=bernoulli_sample(sample_size = 500,tree_size = 20,beta=10)
+# bernoulli_500_50.1_10=bernoulli_sample(sample_size = 500,tree_size = 50,beta=10)
 
-bernoulli_1000_5.10=bernoulli_sample(sample_size = 1000,tree_size = 5,beta=10)
-bernoulli_1000_20.10=bernoulli_sample(sample_size = 1000,tree_size = 20,beta=10)
-bernoulli_1000_50.10=bernoulli_sample(sample_size = 1000,tree_size = 50,beta=10)
-
-# beta = 100
-bernoulli_100_5.100=bernoulli_sample(sample_size = 100,tree_size = 5,beta=100)
-bernoulli_100_20.100=bernoulli_sample(sample_size = 100,tree_size = 20,beta=100)
-bernoulli_100_50.100=bernoulli_sample(sample_size = 100,tree_size = 50,beta=100)
-
-bernoulli_500_5.100=bernoulli_sample(sample_size = 500,tree_size = 5,beta=100)
-bernoulli_500_20.100=bernoulli_sample(sample_size = 500,tree_size = 20,beta=100)
-bernoulli_500_50.100=bernoulli_sample(sample_size = 500,tree_size = 50,beta=100)
-
-bernoulli_1000_5.100=bernoulli_sample(sample_size = 1000,tree_size = 5,beta=100)
-bernoulli_1000_20.100=bernoulli_sample(sample_size = 1000,tree_size = 20,beta=100)
-bernoulli_1000_50.100=bernoulli_sample(sample_size = 1000,tree_size = 50,beta=100)
-
-
-
+bernoulli_1000_5.1_10=bernoulli_sample(sample_size = 1000,tree_size = 5,beta=10)
+bernoulli_1000_20.1_10=bernoulli_sample(sample_size = 1000,tree_size = 20,beta=10)
+bernoulli_1000_50.1_10=bernoulli_sample(sample_size = 1000,tree_size = 50,beta=10)
 
 
 
 
 
 
-# beta = 1
-p1 <- ggplot(data.frame(int_length = bernoulli_1000_20$int_length),
-              aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")+ 
-  xlim(34,245)+
-  ylim(0,45)
 
-p2 <- ggplot(data.frame(total_length = bernoulli_1000_20$total_length),
-              aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="Bernoulli splitting (beta =1)",y="")+
-  xlim(60,546)+
-  ylim(0,40)
 
-p3 <- ggplot(data.frame(cherry = bernoulli_1000_20$cherry),
-              aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
+
+
+
+
+# alpha=10 beta=1
+
+p1 <- ggplot(data.frame(int_length = bernoulli_1000_20.10_1$int_length),
+             aes(x = int_length)) +
+  geom_histogram(bins = 6, color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  labs(y="count")+
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_text(size=10),)
+
+
+
+p2 <- ggplot(data.frame(total_length = bernoulli_1000_20.10_1$total_length),
+             aes(x = total_length)) +
+  geom_histogram(bins = 14, color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  labs(x = "total tree length", title=expression(bold("Bernoulli splitting (" ~alpha == 10~","~ beta==1 ~ ")")))+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(), 
+        plot.title = element_text(size = 10), 
+        axis.ticks = element_blank() )+
+  ylim(0,400)
+
+
+
+p3 <- ggplot(data.frame(cherry = bernoulli_1000_20.10_1$cherry),
+             aes(x = cherry)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
   labs(x = "number of cherries",y="")+
-  xlim(0,13)+
-  ylim(0,300)
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(), 
+        axis.ticks = element_blank() )
 
-# beta=10
-p4 <- ggplot(data.frame(int_length = bernoulli_1000_20.10$int_length),
-              aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")+ 
-  xlim(34,245)+
-  ylim(0,45)
+# alpha =10, beta=10 
+p4 <- ggplot(data.frame(int_length = bernoulli_1000_20.10_10$int_length),
+             aes(x = int_length)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  labs(x = "internal tree length",y="count")+
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_text(size=10), )+
+  xlim(34,330)+
+  ylim(0,60)
 
-p5 <- ggplot(data.frame(total_length = bernoulli_1000_20.10$total_length),
-              aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="Bernoulli splitting (beta =10)",y="")+
-  xlim(60,546)+
-  ylim(0,40)
+p5 <- ggplot(data.frame(total_length = bernoulli_1000_20.10_10$total_length),
+             aes(x = total_length)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())+
+  labs(x = "total tree length", title=expression(bold("Bernoulli splitting (" ~alpha == 10~","~ beta==10 ~ ")")))+
+  xlim(70,742)+
+  ylim(0,65)+
+  theme(plot.title = element_text(size = 10),
+        axis.ticks = element_blank() )
 
-p6 <- ggplot(data.frame(cherry = bernoulli_1000_20.10$cherry),
-              aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
+p6 <- ggplot(data.frame(cherry = bernoulli_1000_20.10_10$cherry),
+             aes(x = cherry)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
   labs(x = "number of cherries",y="")+
-  xlim(0,13)+
-  ylim(0,300)
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank() )+ 
+  xlim(0,17)+
+  ylim(0,500)
 
 
-# beta =100
-p7 <- ggplot(data.frame(int_length = bernoulli_1000_20.100$int_length),
-              aes(x = int_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "internal tree length")+ 
-  xlim(34,245)+
-  ylim(0,45)
-
-p8 <- ggplot(data.frame(total_length = bernoulli_1000_20.100$total_length),
-              aes(x = total_length)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "total tree length", title="Bernoulli splitting (beta =100)",y="")+
-  xlim(60,546)+
-  ylim(0,40)
-
-p9 <- ggplot(data.frame(cherry = bernoulli_1000_20.100$cherry),
-              aes(x = cherry)) +
-  geom_bar(color = "black", fill = "white") + theme_bw() +
-  labs(x = "number of cherries",y="")+
-  xlim(0,13)+
-  ylim(0,300)
-
-plot_grid(p1, p2, p3, p4, p5, p6, p7, p8, p9,
-          nrow = 3, ncol = 3, align = "hv")
+# beta =1 alpha =10
+p7 <- ggplot(data.frame(int_length = bernoulli_1000_20.1_10$int_length),
+             aes(x = int_length)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  labs(x = "Internal tree length",y="count")+
+  xlim(34,330)+
+  ylim(0,60)+
+  theme(axis.title.y = element_text(size=10),
+        axis.title.x = element_text(size=10),)
 
 
 
+p8 <- ggplot(data.frame(total_length = bernoulli_1000_20.1_10$total_length),
+             aes(x = total_length)) +
+  geom_bar(color = "lightblue", fill = "lightblue") +
+  theme_minimal() +
+  labs(x = "Total tree length", title=expression(bold("Bernoulli splitting (" ~alpha == 1~","~ beta==10 ~ ")")))+
+  xlim(70,742)+
+  ylim(0,65)+
+  theme(plot.title = element_text(size = 10),
+        axis.title.x = element_text(size=10),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank() )
 
 
+
+p9 <- ggplot(data.frame(cherry = bernoulli_1000_20.1_10$cherry),
+             aes(x = cherry)) +
+  geom_bar(color = "lightblue", fill = "lightblue") + 
+  theme_minimal() +
+  labs(x = "Number of cherries")+ 
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_text(size=10),
+        axis.ticks = element_blank() )+
+  xlim(0,17)+
+  ylim(0,500)
+
+
+
+
+(p1|p2|p3)/(p4|p5|p6)/(p7|p8|p9) & theme(plot.margin = margin(2,2,2,2))
 
 
