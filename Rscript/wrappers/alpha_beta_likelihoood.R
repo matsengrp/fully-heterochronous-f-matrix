@@ -1,5 +1,16 @@
-library(here)
-source(here("dependent model", "likelihood for other models", "alpha-beta_likelihood.R"))
+# Get this script's directory
+this_file <- (function() {
+    cmdArgs <- commandArgs(trailingOnly = FALSE)
+    needle <- "--file="
+    match <- grep(needle, cmdArgs)
+    if (length(match) > 0) {
+        return(normalizePath(sub(needle, "", cmdArgs[match])))
+    } else {
+        return(normalizePath(sys.frames()[[1]]$ofile))
+    }
+})()
+script_dir <- dirname(this_file)
+source(file.path(script_dir, "..", "..", "dependent model", "likelihood for other models", "alpha-beta_likelihood.R"))
 
 wrapper <- function(file_path, alpha, beta) {
     f_mat <- as.matrix(read.csv(file_path, header = FALSE))
